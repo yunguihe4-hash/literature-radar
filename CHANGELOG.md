@@ -1,5 +1,10 @@
 # Release notes
 
+## v0.3.3 — Historical card migration stability
+
+- Preserve the generated research question and alignment text on a second migration pass; normalize legacy JSON evidence into readable source excerpts. Repeated dry runs now report zero changes after application.
+- Obsidian Bridge remains at 0.2.4. Discovery, Attention, feedback, and scheduling are unchanged.
+
 ## v0.3.2 — Obsidian card reading layout
 
 - Show the verified journal name and a single evidence based “为什么推给我” section in new cards. Keep publication date precision and full text verification state in the pipeline while removing them from the reading body.

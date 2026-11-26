@@ -16,6 +16,24 @@ def _section(text: str, heading: str) -> str:
     return match.group(1).strip() if match else ""
 
 
+def _bullet(text: str, label: str) -> str:
+    match = re.search(r"(?m)^- " + re.escape(label) + r"：([^\n]+)", text)
+    return match.group(1).strip() if match else ""
+
+
+def _alignment(value: str) -> str | None:
+    if not value or value == "待核对。":
+        return None
+    try:
+        evidence = json.loads(value)
+    except (ValueError, TypeError):
+        return value
+    if isinstance(evidence, dict) and evidence.get("excerpt"):
+        field = "摘要" if evidence.get("field") == "abstract" else "论文"
+        return f"{field}证据：{evidence['excerpt']}；具体迁移需人工评估。"
+    return value
+
+
 def _managed(text: str) -> bool:
     return (text.count(START) == text.count(END) == 1 and
             text.index(START) < text.index(END))
@@ -30,7 +48,7 @@ def _render_update(text: str, paper: dict, config: dict) -> str:
     topic_id = meta["topic_id"]
     if config["topic"]["id"] != topic_id:
         raise ValueError("Topic config/card identity differs")
-    question = _section(text, "研究问题")
+    question = _section(text, "研究问题") or _bullet(text, "研究问题")
     labels = {item["id"]: item["label"] for item in config["profile"]["questions"]}
     label = labels.get(question, question)
     if not label or label == "待核对。":
@@ -39,7 +57,9 @@ def _render_update(text: str, paper: dict, config: dict) -> str:
                              for alias in item.get("aliases", []))), "")
     phase = config["phase"].get("current_phase") or "重点问题：" + "、".join(
         labels[item] for item in config["phase"].get("priority_question_ids", []) if item in labels)
-    old_evidence = _section(text, "相关性证据")
+    old_evidence = _section(text, "相关性证据") or _bullet(text, "迁移价值")
+    if old_evidence.startswith("LOW 保底推荐；"):
+        old_evidence = old_evidence.removeprefix("LOW 保底推荐；")
     row = {"paper_id": paper["paper_id"], "doi": paper.get("doi"),
            "title": paper.get("title"), "abstract": paper.get("abstract"),
            "journal": paper.get("journal") or ("bioRxiv" if any(
@@ -48,7 +68,7 @@ def _render_update(text: str, paper: dict, config: dict) -> str:
            "date": meta.get("publication_date") or paper.get("publication_date"),
            "url": paper.get("landing_url"), "research_question_label": label,
            "research_phase": phase, "relevance": meta.get("relevance_category"),
-           "research_alignment": old_evidence if old_evidence and old_evidence != "待核对。" else None}
+           "research_alignment": _alignment(old_evidence)}
     attention = meta.get("current_attention") or meta.get("attention")
     generated = render_card(row, topic_id=topic_id, topic_name=config["topic"]["display_name"],
                             run_id=meta.get("source_run") or "historical", seen_on=meta.get("delivery_date") or "1970-01-01",

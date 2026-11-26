@@ -40,6 +40,7 @@ class CardLayoutMigrationTests(unittest.TestCase):
                                "abstract": "We generated chromosome-level assemblies."},
                               topic_id=topic, topic_name="Plant Y", run_id="run-1",
                               seen_on="2026-11-22", attention="LOW")
+            old = old.replace(END, '## 研究问题\n\ny-structure\n\n## 相关性证据\n\n{"field":"abstract","excerpt":"Y chromosome evidence"}\n\n' + END)
             old = old.replace("## 我的笔记\n", "## 我的笔记\n人工原始笔记。\n")
             old = old.replace('"feedback_decision": ""', '"feedback_decision": "keep"')
             old = old.replace('"review_status": "pending"', '"review_status": "reviewed"')

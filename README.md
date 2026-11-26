@@ -1,6 +1,6 @@
 # Literature Radar
 
-**Core v0.3.2** · **Obsidian Bridge v0.2.4** · **MIT**
+**Core v0.3.3** · **Obsidian Bridge v0.2.4** · **MIT**
 
 Literature Radar helps researchers discover recent papers, inspect why they were recommended, and record reading decisions. Every research Topic has its own searches, provider checkpoints, recommendations, feedback, and training history. The core runs locally; online requests occur only when you invoke discovery, Bootstrap, or Weekly.
 
