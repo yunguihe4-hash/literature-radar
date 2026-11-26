@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install declared dependencies and build tool
-        run: python -m pip install . build
+        run: python -m pip install . build 'setuptools>=77'
       - name: Test synthetic workflows only
         run: python -m unittest
       - name: Validate both fictional configurations

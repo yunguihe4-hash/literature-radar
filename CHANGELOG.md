@@ -7,7 +7,9 @@ registry path test from runner environment variables. Correct disabled-Topic
 fixtures to use the supported top-level flag. All supported Python
 versions now finish the offline CI matrix independently. Update checkout and
 setup-python Actions to supported Node.js 24 releases. Obsidian Bridge remains
-at 0.2.3; notification content and runtime registry-path precedence are unchanged.
+at 0.2.3. CI installs the declared setuptools build backend explicitly for
+offline wheel checks; notification content and runtime registry-path precedence
+are unchanged.
 
 ## v0.3.0 — Initial public release
 
