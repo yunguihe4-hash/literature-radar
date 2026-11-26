@@ -143,7 +143,7 @@ class P0CompatibilityTests(unittest.TestCase):
     def test_legacy_schedule_and_history_migrate_without_losing_fields(self):
         topic_file = self.config_b / "topic.json"
         topic = json.loads(topic_file.read_text())
-        topic["extensions"]["enabled"] = False
+        topic["enabled"] = False
         topic_file.write_text(json.dumps(topic))
         state_file = self.root / "reports/weekly_schedule.json"
         state_file.parent.mkdir(parents=True)
@@ -171,7 +171,7 @@ class P0CompatibilityTests(unittest.TestCase):
                                 "lookback_days": 7}}}))
         topic_file = self.config_b / "topic.json"
         topic = json.loads(topic_file.read_text())
-        topic["extensions"]["enabled"] = False
+        topic["enabled"] = False
         topic_file.write_text(json.dumps(topic))
         provider = RichProvider("openalex", [[record(1)]])
         result = run_scheduled(
@@ -190,7 +190,7 @@ class P0CompatibilityTests(unittest.TestCase):
     def test_crash_after_topic_commit_reuses_completed_cycle(self):
         topic_file = self.config_b / "topic.json"
         topic = json.loads(topic_file.read_text())
-        topic["extensions"]["enabled"] = False
+        topic["enabled"] = False
         topic_file.write_text(json.dumps(topic))
         planned = datetime(2026, 11, 2, 14, tzinfo=timezone.utc)
         actual = datetime(2026, 11, 2, 15, tzinfo=timezone.utc)

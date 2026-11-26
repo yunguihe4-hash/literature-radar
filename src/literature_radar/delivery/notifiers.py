@@ -27,6 +27,11 @@ def render_alert(payload: dict) -> str:
     paper = payload["paper"]
     reason = payload["reason"]
     transfer = payload.get("transfer_explanation") or {}
+    transfers = "; ".join(
+        item.get("from", "?") + " -> " + item.get("to", "?") + " (" + item["type"]
+        + (", " + item["scope"] if item.get("scope") else "") + ")"
+        for item in reason.get("transfers") or []
+    )
     lines = [f"# {_safe(paper['title'])}", "",
              f"Priority: {_safe(payload['priority'])}",
              f"Authors: {_safe(', '.join(paper.get('authors') or []))}",
@@ -48,9 +53,7 @@ def render_alert(payload: dict) -> str:
              f"Questions: {_safe(', '.join(reason.get('questions') or []))}",
              f"Methods: {_safe(', '.join(reason.get('methods') or []))}",
              f"Applications: {_safe(', '.join(reason.get('applications') or []))}",
-             f"Transfer: {_safe('; '.join(item.get('from', '?') + ' -> ' + item.get('to', '?') + ' (' + item['type'] +
-                                               (', ' + item['scope'] if item.get('scope') else '') + ')'
-                                               for item in reason.get('transfers') or []))}",
+             f"Transfer: {_safe(transfers)}",
              "Evidence:"]
     lines.extend(f"- {_safe(item.get('field'))}: {_safe(item.get('excerpt') or item.get('phrase'))}"
                  for item in reason.get("evidence") or [])

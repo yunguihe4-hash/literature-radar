@@ -77,10 +77,13 @@ class Obsidian451Tests(unittest.TestCase):
         flatpak = self.root / ".var/app/md.obsidian.Obsidian/config/obsidian/obsidian.json"
         flatpak.parent.mkdir(parents=True)
         flatpak.write_text(json.dumps({"vaults": {"f": {"path": str(self.vaults[2])}}}))
-        self.assertIn(self.vaults[2], discover_vaults(home=self.root, platform="linux"))
-        self.assertEqual(registry_file(home=self.root, platform="linux"), self.root / ".config/obsidian/obsidian.json")
-        self.assertEqual(registry_file(home=self.root, platform="darwin"), self.root / "Library/Application Support/obsidian/obsidian.json")
-        self.assertEqual(registry_file(home=self.root, platform="win32"), self.root / "AppData/Roaming/obsidian/obsidian.json")
+        self.assertIn(self.vaults[2], discover_vaults(home=self.root, platform="linux", environ={}))
+        self.assertEqual(registry_file(home=self.root, platform="linux", environ={}), self.root / ".config/obsidian/obsidian.json")
+        self.assertEqual(registry_file(home=self.root, platform="darwin", environ={}), self.root / "Library/Application Support/obsidian/obsidian.json")
+        self.assertEqual(registry_file(home=self.root, platform="win32", environ={}), self.root / "AppData/Roaming/obsidian/obsidian.json")
+        xdg = self.root / "xdg-config"
+        self.assertEqual(registry_file(home=self.root, platform="linux", environ={"XDG_CONFIG_HOME": str(xdg)}),
+                         xdg / "obsidian/obsidian.json")
 
     def test_binding_permissions_move_and_path_safety(self):
         bind_vault(self.vaults[0], config=self.config)

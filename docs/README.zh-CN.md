@@ -65,4 +65,4 @@ Topic、Focus、反馈和 Memory 在私有 config 目录；SQLite 在 `--databas
 
 备份还需单独复制私有 config、反馈和 Vault；SQLite 备份并不包含它们。升级前保存并验证备份，再在新虚拟环境安装 wheel，验证配置和 CLI 后切换定时服务。卸载时只禁用自己的 timer、删除自己的虚拟环境；数据和 Vault 由用户决定是否保留。详情见[备份与恢复](backup-restore.md)。
 
-Core 版本为 0.3.0，Bridge 独立版本为 0.2.3。源码和发行包采用 [MIT 许可证](../LICENSE)；[第三方说明](../THIRD_PARTY_NOTICES.md)列出了依赖和 Provider 内容边界。维护者的个人环境曾完成真实 Weekly；新用户全新安装、双 Topic Bootstrap、Weekly、反馈隔离、Obsidian 交付和 systemd 在隔离 mock 环境通过验收。尚未在全新用户环境验证五源真实联网运行；Linux/systemd 已验证，其他平台未验证。Provider 部分成功和 checkpoint 恢复属于支持范围；没有科学关联论文时可以推荐 0 篇。
+Core 版本为 0.3.1，Bridge 独立版本为 0.2.3。源码和发行包采用 [MIT 许可证](../LICENSE)；[第三方说明](../THIRD_PARTY_NOTICES.md)列出了依赖和 Provider 内容边界。维护者的个人环境曾完成真实 Weekly；新用户全新安装、双 Topic Bootstrap、Weekly、反馈隔离、Obsidian 交付和 systemd 在隔离 mock 环境通过验收。尚未在全新用户环境验证五源真实联网运行；Linux/systemd 已验证，其他平台未验证。Provider 部分成功和 checkpoint 恢复属于支持范围；没有科学关联论文时可以推荐 0 篇。

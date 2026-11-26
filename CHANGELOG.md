@@ -1,5 +1,14 @@
 # Release notes
 
+## v0.3.1 — CI compatibility hotfix
+
+Fix Python 3.11 parsing of alert notifications and isolate the Obsidian
+registry path test from runner environment variables. Correct disabled-Topic
+fixtures to use the supported top-level flag. All supported Python
+versions now finish the offline CI matrix independently. Update checkout and
+setup-python Actions to supported Node.js 24 releases. Obsidian Bridge remains
+at 0.2.3; notification content and runtime registry-path precedence are unchanged.
+
 ## v0.3.0 — Initial public release
 
 Literature Radar provides independent research Topics, five-source discovery
