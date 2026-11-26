@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "topic_id": "acoustic-demo",
+  "positive": [
+    {
+      "term": "resonance measurement",
+      "dimension": "method",
+      "weight": 3
+    }
+  ],
+  "negative": [
+    {
+      "term": "unrelated color chart",
+      "dimension": "general",
+      "weight": 4
+    }
+  ],
+  "priority_thresholds": {
+    "high": 7,
+    "medium": 2
+  }
+}

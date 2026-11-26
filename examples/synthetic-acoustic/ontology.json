@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "topic_id": "acoustic-demo",
+  "concepts": [
+    {
+      "id": "architectural-panel",
+      "label": "architectural panel",
+      "aliases": [
+        "architectural panel"
+      ]
+    },
+    {
+      "id": "recycled-composite",
+      "label": "recycled composite",
+      "aliases": [
+        "recycled composite"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "from": "architectural-panel",
+      "to": "attenuation",
+      "type": "application_transfer"
+    },
+    {
+      "from": "recycled-composite",
+      "to": "resonance",
+      "type": "method_transfer"
+    }
+  ]
+}

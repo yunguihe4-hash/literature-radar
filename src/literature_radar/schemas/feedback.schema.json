@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:literature-radar:schema:feedback:v1",
+  "title": "Literature Radar feedback v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "topic_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$",
+            "minLength": 1
+          },
+          "paper_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "decision": {
+            "enum": [
+              "keep",
+              "must_read",
+              "later",
+              "discard"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "extensions": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^[a-z][a-z0-9_-]*$"
+            },
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "topic_id",
+          "paper_key",
+          "decision",
+          "reason",
+          "recorded_at"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_-]*$"
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "entries"
+  ],
+  "additionalProperties": false
+}

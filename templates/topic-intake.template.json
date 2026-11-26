@@ -1,0 +1,17 @@
+{
+  "id": "fictional-signal",
+  "name": "Fictional Signal Topic",
+  "goal": "Describe a user-owned research goal here",
+  "questions": ["Describe one scientific question here"],
+  "target_species": ["Describe a target organism here"],
+  "model_species": [],
+  "methods": ["Describe one important method here"],
+  "applications": [],
+  "transfer_directions": [],
+  "exclusions": [],
+  "journal_categories": [],
+  "search_terms": ["Replace with a focused search phrase"],
+  "sources": ["openalex", "crossref", "europepmc", "pubmed", "biorxiv"],
+  "weekly_enabled": true,
+  "notification": "none"
+}

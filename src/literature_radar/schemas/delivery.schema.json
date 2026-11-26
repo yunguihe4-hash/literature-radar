@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:literature-radar:schema:delivery:v1",
+  "title": "Literature Radar delivery v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "topic_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "minLength": 1
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "enum": [
+            "json"
+          ]
+        },
+        "relative_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "extensions": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_-]*$"
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "format",
+        "relative_path"
+      ],
+      "additionalProperties": false
+    },
+    "notification": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "provider": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "minLength": 1
+        },
+        "extensions": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_-]*$"
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "enabled",
+        "provider"
+      ],
+      "additionalProperties": false
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_-]*$"
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "topic_id",
+    "output",
+    "notification"
+  ],
+  "additionalProperties": false
+}

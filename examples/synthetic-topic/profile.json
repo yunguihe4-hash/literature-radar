@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "topic_id": "coating-demo",
+  "questions": [
+    {
+      "id": "durability",
+      "label": "coating durability",
+      "aliases": [
+        "coating durability",
+        "endurance under heat cycling"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "id": "heat-cycle",
+      "label": "heat cycling",
+      "aliases": [
+        "heat cycling"
+      ]
+    }
+  ],
+  "applications": [
+    {
+      "id": "roof-film",
+      "label": "roof film",
+      "aliases": [
+        "roof film"
+      ]
+    }
+  ]
+}

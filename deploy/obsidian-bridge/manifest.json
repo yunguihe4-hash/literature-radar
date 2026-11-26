@@ -1,0 +1,9 @@
+{
+  "id": "literature-radar-bridge",
+  "name": "Literature Radar Bridge",
+  "version": "0.2.3",
+  "minAppVersion": "1.13.1",
+  "description": "Live review controls, dashboard reconciliation, and private feedback outbox.",
+  "author": "Literature Radar",
+  "isDesktopOnly": true
+}

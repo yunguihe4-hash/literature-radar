@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "name": "research-methods",
+  "methods": [
+    {
+      "name": "T2T assembly",
+      "aliases": [
+        "T2T",
+        "telomere-to-telomere",
+        "telomere to telomere",
+        "gap-free chromosome"
+      ],
+      "solves": [
+        "complete chromosome assembly",
+        "repeat-spanning assembly"
+      ],
+      "transferable_to": [
+        "Y chromosome assembly",
+        "sex chromosome assembly"
+      ]
+    },
+    {
+      "name": "HiFi",
+      "aliases": [
+        "PacBio HiFi",
+        "HiFi reads",
+        "HiFi sequencing",
+        "CCS reads"
+      ],
+      "solves": [
+        "accurate long-read assembly"
+      ],
+      "transferable_to": [
+        "Y chromosome assembly",
+        "repeat resolution"
+      ]
+    },
+    {
+      "name": "ONT ultra-long",
+      "aliases": [
+        "ultra-long ONT",
+        "ultralong ONT",
+        "ultra-long reads",
+        "Oxford Nanopore"
+      ],
+      "solves": [
+        "long repeat traversal"
+      ],
+      "transferable_to": [
+        "Y chromosome assembly",
+        "heterochromatin assembly"
+      ]
+    },
+    {
+      "name": "repeat resolution",
+      "aliases": [
+        "repeat resolution",
+        "repeat-resolved",
+        "repeat-rich",
+        "heterochromatin assembly",
+        "satellite DNA",
+        "centromere"
+      ],
+      "solves": [
+        "complex repeat reconstruction"
+      ],
+      "transferable_to": [
+        "Y chromosome assembly",
+        "sex chromosome structure"
+      ]
+    },
+    {
+      "name": "haplotype phasing",
+      "aliases": [
+        "haplotype-resolved",
+        "haplotype resolved",
+        "phasing",
+        "trio-binning"
+      ],
+      "solves": [
+        "haplotype separation"
+      ],
+      "transferable_to": [
+        "X/Y separation",
+        "sex chromosome assembly"
+      ]
+    },
+    {
+      "name": "k-mer identification",
+      "aliases": [
+        "k-mer",
+        "kmer",
+        "sex-specific coverage"
+      ],
+      "solves": [
+        "sex-specific sequence identification"
+      ],
+      "transferable_to": [
+        "male-specific sequence discovery",
+        "Y-linked sequence discovery"
+      ]
+    },
+    {
+      "name": "chromosome quotient",
+      "aliases": [
+        "chromosome quotient",
+        "R-CQ",
+        "male female coverage"
+      ],
+      "solves": [
+        "sex chromosome identification"
+      ],
+      "transferable_to": [
+        "Y-linked sequence discovery"
+      ]
+    },
+    {
+      "name": "sex-specific coverage",
+      "aliases": [
+        "male/female coverage",
+        "male female coverage",
+        "coverage difference",
+        "read-depth comparison",
+        "sex-specific read depth"
+      ],
+      "solves": [
+        "sex chromosome identification"
+      ],
+      "transferable_to": [
+        "sex chromosome identification",
+        "Y chromosome identification",
+        "Y-linked sequence discovery"
+      ]
+    },
+    {
+      "name": "CRISPR knockout",
+      "aliases": [
+        "CRISPR knockout",
+        "CRISPR knock-out",
+        "CRISPR/Cas9",
+        "gene knockout"
+      ],
+      "solves": [
+        "gene function testing"
+      ],
+      "transferable_to": [
+        "Orco function",
+        "sex determination"
+      ]
+    },
+    {
+      "name": "RNA-seq",
+      "aliases": [
+        "RNA-seq",
+        "RNA seq",
+        "RNA sequencing"
+      ],
+      "solves": [
+        "transcriptional response measurement"
+      ],
+      "transferable_to": [
+        "olfactory regulation"
+      ]
+    }
+  ]
+}

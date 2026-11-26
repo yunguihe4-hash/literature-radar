@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "topic_id": "coating-demo",
+  "output": {
+    "format": "json",
+    "relative_path": "results/coating.json"
+  },
+  "notification": {
+    "enabled": false,
+    "provider": "none"
+  }
+}

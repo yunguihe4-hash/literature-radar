@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "topic_id": "acoustic-demo",
+  "output": {
+    "format": "json",
+    "relative_path": "reports/acoustic.json"
+  },
+  "notification": {
+    "enabled": true,
+    "provider": "injected-recorder"
+  }
+}

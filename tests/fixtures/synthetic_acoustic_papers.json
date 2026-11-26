@@ -1,0 +1,16 @@
+[
+  {
+    "source_id": "SYN-A01",
+    "title": "Fictional Acoustic Foam Panel Note",
+    "abstract": "An architectural panel made of foam was tested with resonance measurement.",
+    "source": "synthetic-index",
+    "identifiers": {}
+  },
+  {
+    "source_id": "SYN-A02",
+    "title": "Fictional Foam Color Chart",
+    "abstract": "An unrelated color chart for foam.",
+    "source": "synthetic-index",
+    "identifiers": {}
+  }
+]

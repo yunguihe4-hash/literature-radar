@@ -1,0 +1,1 @@
+"""Explicit user feedback storage."""

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:literature-radar:schema:rules:v1",
+  "title": "Literature Radar rules v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "topic_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "minLength": 1
+    },
+    "positive": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/term"
+      }
+    },
+    "negative": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/term"
+      }
+    },
+    "priority_thresholds": {
+      "type": "object",
+      "properties": {
+        "high": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "medium": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "high",
+        "medium"
+      ],
+      "additionalProperties": false
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_-]*$"
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "topic_id",
+    "positive",
+    "negative",
+    "priority_thresholds"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "term": {
+      "type": "object",
+      "properties": {
+        "term": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dimension": {
+          "enum": [
+            "question",
+            "method",
+            "application",
+            "general"
+          ]
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "extensions": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_-]*$"
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "term",
+        "dimension",
+        "weight"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

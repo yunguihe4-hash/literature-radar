@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "topic_id": "coating-demo",
+  "positive": [
+    {
+      "term": "heat cycling",
+      "dimension": "method",
+      "weight": 2
+    },
+    {
+      "term": "coating durability",
+      "dimension": "question",
+      "weight": 2
+    }
+  ],
+  "negative": [
+    {
+      "term": "unrelated demonstration",
+      "dimension": "general",
+      "weight": 3
+    }
+  ],
+  "priority_thresholds": {
+    "high": 7,
+    "medium": 3
+  }
+}

@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "literature-radar-core"
+version = "0.3.0"
+description = "Configurable offline-first scientific literature attention pipeline"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+dependencies = ["jsonschema>=4.21,<5", "rfc3339-validator>=0.1.4,<1"]
+
+[project.scripts]
+literature-radar = "literature_radar.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"literature_radar.schemas" = ["*.schema.json"]
+"literature_radar.attention" = ["legacy_methods.json"]
+
+[tool.setuptools.data-files]
+"share/doc/literature-radar" = ["THIRD_PARTY_NOTICES.md"]

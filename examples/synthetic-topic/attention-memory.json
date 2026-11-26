@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "topic_id": "coating-demo",
+  "preferred_concept_ids": [
+    "spacecraft-film"
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "source_id": "SYN-001",
+    "title": "Synthetic Lab Note A: Coating Durability",
+    "abstract": "A spacecraft film uses heat cycling to assess coating durability for a prototype barrier.",
+    "source": "synthetic-index",
+    "identifiers": {}
+  },
+  {
+    "source_id": "SYN-002",
+    "title": "Synthetic Lab Note B: Coating Color",
+    "abstract": "An unrelated demonstration of coating color.",
+    "source": "synthetic-index",
+    "identifiers": {}
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "acoustic-demo",
+  "display_name": "Fictional acoustic foam study",
+  "search_terms": [
+    "foam"
+  ],
+  "sources": [
+    "synthetic-index"
+  ]
+}

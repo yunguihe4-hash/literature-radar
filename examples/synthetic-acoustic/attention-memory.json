@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "topic_id": "acoustic-demo",
+  "preferred_concept_ids": [
+    "architectural-panel"
+  ]
+}

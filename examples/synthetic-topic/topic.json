@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "coating-demo",
+  "display_name": "Synthetic coating demonstration",
+  "search_terms": [
+    "coating"
+  ],
+  "sources": [
+    "synthetic-index"
+  ]
+}

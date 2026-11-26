@@ -1,0 +1,9 @@
+.lr-feedback-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin: .6rem 0; }
+.lr-feedback-button { padding: .35rem .7rem; border: 1px solid var(--background-modifier-border); border-radius: var(--radius-s); background: var(--background-secondary); color: var(--text-normal); cursor: pointer; font: inherit; }
+.lr-feedback-button:hover { border-color: var(--interactive-accent); }
+.lr-feedback-button.is-selected { color: #fff; font-weight: 700; border-width: 2px; }
+.lr-feedback-must_read.is-selected { background: color-mix(in srgb, var(--color-purple, #7c3aed) 70%, #000); border-color: var(--color-purple, #7c3aed); }
+.lr-feedback-keep.is-selected { background: color-mix(in srgb, var(--color-green, #16a34a) 65%, #000); border-color: var(--color-green, #16a34a); }
+.lr-feedback-later.is-selected { background: color-mix(in srgb, var(--color-orange, #d97706) 55%, #000); border-color: var(--color-orange, #d97706); }
+.lr-feedback-discard.is-selected { background: color-mix(in srgb, var(--color-red, #dc2626) 65%, #000); border-color: var(--color-red, #dc2626); }
+.lr-feedback-current { flex-basis: 100%; color: var(--text-normal); font-weight: 600; margin-top: .2rem; }

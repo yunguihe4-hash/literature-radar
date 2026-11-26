@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "topic_id": "acoustic-demo",
+  "priority_question_ids": [],
+  "priority_method_ids": [
+    "resonance"
+  ]
+}
