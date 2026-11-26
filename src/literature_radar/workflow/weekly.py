@@ -613,6 +613,8 @@ def run_weekly(config_dir: Path, database: Path, output_dir: Path, *,
         rows.append({"paper_id": paper.paper_id, "topic_id": topic_id,
                      "paper_key": card_key(topic_id, paper.paper_id, paper.doi or paper.identifiers.get("doi")),
                      "title": paper.title, "abstract": paper.abstract,
+                     "journal": paper.journal or ("bioRxiv" if any(
+                         item.provider_id == "biorxiv" for item in paper.source_records) else None),
                      "doi": paper.doi or paper.identifiers.get("doi"),
                      "url": paper.landing_url, "date": published,
                      "publication_date": paper.publication_date,
@@ -642,6 +644,17 @@ def run_weekly(config_dir: Path, database: Path, output_dir: Path, *,
                      "novel_event_qualified": novel_event,
                      "research_question": result["reason"]["questions"][0] if result["reason"]["questions"] else
                                           result["reason"]["topic_corroboration"]["question_id"] if result["reason"].get("topic_corroboration") else None,
+                     "research_question_label": next((item["label"] for item in bundle["profile"]["questions"]
+                         if item["id"] == (result["reason"]["questions"][0] if result["reason"]["questions"] else
+                             result["reason"]["topic_corroboration"]["question_id"] if result["reason"].get("topic_corroboration") else None)), None),
+                     "research_phase": result["original_attention"].get("research_phase") or
+                         "重点问题：" + "、".join(item["label"] for item in bundle["profile"]["questions"]
+                             if item["id"] in bundle["phase"]["priority_question_ids"]),
+                     "method_evidence": next((item["excerpt"] for item in result["reason"]["evidence"]
+                         if item.get("field") == "abstract" and item.get("phrase") in
+                         {alias for method in bundle["profile"]["methods"] for alias in method.get("aliases", [])}), None),
+                     "research_alignment": (transfer.get("transfer_rationale") if transfer and transfer.get("evidence_excerpt") else
+                         result["reason"].get("topic_corroboration", {}).get("rationale") if result["reason"].get("topic_corroboration") else None),
                      "transfer_type": transfer["transfer_type"] if transfer else
                                       ("direct_reference" if relevance == "A" else None),
                      "transfer_explanation": transfer,

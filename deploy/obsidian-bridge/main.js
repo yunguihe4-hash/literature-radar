@@ -1,4 +1,4 @@
-const { Plugin, PluginSettingTab, Setting, TFile } = require('obsidian');
+const { Plugin, PluginSettingTab, Setting, TFile, MarkdownView } = require('obsidian');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -162,6 +162,17 @@ module.exports = class LiteratureRadarBridge extends Plugin {
       }
     }(this.app, this));
     this.busyFiles = new Set();
+    this.fullPropertiesFor = null;
+    this.addCommand({ id: 'toggle-full-card-properties', name: 'Toggle full card Properties',
+      callback: () => {
+        const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+        if (!view?.file || !reviewPath(view.file.path)) return;
+        this.fullPropertiesFor = this.fullPropertiesFor === view.file.path ? null : view.file.path;
+        this.updateCardProperties();
+      } });
+    this.registerEvent(this.app.workspace.on('active-leaf-change', () => this.updateCardProperties()));
+    this.registerEvent(this.app.workspace.on('file-open', () => this.updateCardProperties()));
+    this.registerInterval(setInterval(() => this.updateCardProperties(), 1000));
     this.registerMarkdownCodeBlockProcessor('literature-radar-feedback', (_source, element, context) => {
       const file = this.app.vault.getAbstractFileByPath(context.sourcePath);
       if (file instanceof TFile && reviewPath(file.path)) this.renderControls(element, file);
@@ -171,6 +182,7 @@ module.exports = class LiteratureRadarBridge extends Plugin {
       if (file.path !== 'dashboard.md') this.enqueue(file);
     }));
     this.app.workspace.onLayoutReady(() => {
+      this.updateCardProperties();
       this.scheduleDashboard();
       for (const file of this.app.vault.getMarkdownFiles()) this.enqueue(file);
     });
@@ -183,6 +195,20 @@ module.exports = class LiteratureRadarBridge extends Plugin {
       this.outboxWatcher = fs.watch(pluginDir, () => this.scheduleDashboard());
     } catch { this.outboxWatcher = null; }
     this.register(() => this.outboxWatcher?.close());
+  }
+
+  updateCardProperties() {
+    this.app.workspace.iterateAllLeaves(leaf => {
+      const view = leaf.view;
+      if (!(view instanceof MarkdownView)) return;
+      const container = view.containerEl;
+      const props = [...container.querySelectorAll('.metadata-property')];
+      // The scoped rule is enabled only when this Obsidian build exposes the
+      // property key on every row. An unknown DOM shape leaves all fields visible.
+      const supported = props.length > 0 && props.every(el => el.hasAttribute('data-property-key'));
+      container.classList.toggle('lr-compact-properties', Boolean(supported && view.file &&
+        reviewPath(view.file.path) && this.fullPropertiesFor !== view.file.path));
+    });
   }
 
   renderControls(element, file) {
@@ -319,7 +345,7 @@ module.exports = class LiteratureRadarBridge extends Plugin {
     const front = this.app.metadataCache.getFileCache(file)?.frontmatter;
     if (!front || front.type !== 'literature-review-card') return;
     const topic = match[2];
-    if (front.topic_id !== topic || front.topic !== topic ||
+    if (front.topic_id !== topic || ![topic, front.topic_display_name].includes(front.topic) ||
         typeof front.paper_key !== 'string' || !front.paper_key.startsWith(topic + '|') ||
         typeof front.paper_id !== 'string' || typeof front.doi !== 'string') return;
     const decision = front.feedback_decision;

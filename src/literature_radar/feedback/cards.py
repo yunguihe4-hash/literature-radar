@@ -61,7 +61,8 @@ def import_cards(config_dir: Path, cards_root: Path, database: Path,
     cards_root = ensure_private_path(cards_root)
     database = ensure_private_path(database)
     feedback_file = ensure_private_path(feedback_file or config_dir / "feedback.json")
-    topic_id = load_bundle(config_dir)["topic"]["id"]
+    topic_config = load_bundle(config_dir)["topic"]
+    topic_id = topic_config["id"]
     papers = {paper.paper_id: paper for paper in AcademicStore(database).topic_papers(topic_id)}
     existing = load_feedback(feedback_file)
     if any(entry["topic_id"] != topic_id for entry in existing["entries"]):
@@ -82,7 +83,7 @@ def import_cards(config_dir: Path, cards_root: Path, database: Path,
         if metadata.get("topic_id") != topic_id:
             ignored += 1
             continue
-        if not REQUIRED.issubset(metadata) or metadata["topic"] != topic_id:
+        if not REQUIRED.issubset(metadata) or metadata["topic"] not in {topic_id, topic_config["display_name"]}:
             raise ValueError(f"incomplete or conflicting card Properties: {path}")
         if path.parent.parent.name != topic_id:
             raise ValueError(f"card Topic does not match directory: {path}")

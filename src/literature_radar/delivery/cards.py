@@ -22,6 +22,8 @@ def card_key(topic_id: str, paper_id: str, doi: str | None) -> str:
 
 def _scalar(value: str) -> str:
     value = value.strip()
+    if len(value) >= 2 and value[0] == value[-1] == "'":
+        return value[1:-1].replace("''", "'")
     if value.startswith('"'):
         try: return str(json.loads(value))
         except (ValueError, TypeError): pass
@@ -50,6 +52,58 @@ def _human_section(previous: str) -> str:
         return previous[previous.index(marker):].rstrip() + "\n"
     from literature_radar.delivery.review_ui import review_buttons
     return "## 我的评价\n\n" + review_buttons() + "\n\n## 我的笔记\n"
+
+
+def _generated_tail(previous: str) -> str:
+    """Keep every byte after the managed block, including independent notes."""
+    if not previous:
+        return "\n\n" + _human_section("")
+    if previous.count(START) != 1 or previous.count(END) != 1 or previous.index(START) > previous.index(END):
+        raise ValueError("existing card lacks unique auto-generated boundaries")
+    return previous[previous.index(END) + len(END):]
+
+
+def _method_evidence(row: dict) -> str:
+    transfer = row.get("transfer_explanation")
+    if isinstance(transfer, dict) and transfer.get("status") == "EVIDENCE_MATCHED":
+        excerpt = transfer.get("evidence_excerpt")
+        if excerpt:
+            return f"文章{transfer.get('evidence_field') or '摘要'}证据：{excerpt}"
+    evidence = row.get("method_evidence")
+    if evidence:
+        return str(evidence)
+    # Quote a method statement from the abstract itself. No technology is inferred
+    # from a title or from a Topic method label.
+    abstract = str(row.get("abstract") or "")
+    sentences = re.split(r"(?<=[.!?])\s+", abstract)
+    for sentence in sentences:
+        if re.search(r"\b(?:we (?:generated|used|developed|assembled|sequenced)|by integrating|using|comparative analys(?:is|es))\b", sentence, re.I):
+            return "摘要明确报告：" + sentence.strip()
+    return ""
+
+
+def _why_push(row: dict, attention: str) -> list[str]:
+    question = row.get("research_question_label") or row.get("research_question")
+    phase = row.get("research_phase") or "当前 Topic 未配置阶段名称"
+    method = _method_evidence(row)
+    alignment = row.get("research_alignment")
+    if not alignment:
+        relevance = row.get("relevance")
+        if relevance == "C":
+            alignment = "研究问题有摘要证据支持；具体跨研究对象的迁移仍需人工评估。"
+        elif relevance in {"A", "B"}:
+            alignment = row.get("why_recommended") or "与 Topic 研究问题相关。"
+        else:
+            alignment = row.get("fallback_scientific_link") or "关联证据有限，需人工复核。"
+    if attention == "LOW":
+        alignment = f"LOW 保底推荐；{alignment}"
+    lines = ["", "## 为什么推给我", "",
+             f"- 研究问题：{_plain(question) or '未识别到明确匹配问题。'}",
+             f"- 当前阶段：{_plain(phase)}"]
+    if method:
+        lines.append(f"- 可迁移方法：{_plain(method)}")
+    lines.append(f"- 迁移价值：{_plain(alignment)}")
+    return lines
 
 
 def _push_history(old: dict[str, str]) -> list[dict[str, str]]:
@@ -92,9 +146,10 @@ def render_card(row: dict, *, topic_id: str, topic_name: str, run_id: str,
     last_pushed = history[-1]["date"] if history else ""
     props = {
         "type": "literature-review-card", "card_kind": "bootstrap_seed" if seed else "weekly_recommendation",
-        "topic": topic_id, "topic_id": topic_id,
+        "topic": topic_name, "topic_id": topic_id,
         "topic_display_name": topic_name, "paper_key": key, "paper_id": paper_id,
-        "doi": doi, "source_run": run_id, "first_seen": first_seen,
+        "doi": doi, "journal": str(row.get("journal") or old.get("journal") or "未收录期刊信息"),
+        "source_run": run_id, "first_seen": first_seen,
         "publication_date": str(row.get("publication_date") or row.get("date") or ""),
         "online_date": str(row.get("online_date") or ""),
         "date_source": str(row.get("date_source") or "unverified"),
@@ -118,28 +173,15 @@ def render_card(row: dict, *, topic_id: str, topic_name: str, run_id: str,
         "feedback_synced_decision": old.get("feedback_synced_decision", ""),
     }
     header = "---\n" + "\n".join(f"{k}: {json.dumps(v, ensure_ascii=False)}" for k, v in props.items()) + "\n---\n\n"
-    evidence = row.get("evidence") or row.get("transfer_explanation") or ""
-    if isinstance(evidence, (dict, list)):
-        evidence = json.dumps(evidence, ensure_ascii=False)
     lines = [START, f"# {_plain(row.get('title'))}", "",
              f"- 研究主题：{_plain(topic_name)}",
              "- 类型：初次调研种子文献" if seed else f"- Attention：{attention}",
              f"- 发表时间：{_plain(row.get('date') or row.get('publication_date'))}",
-             f"- 发表时间精度：{_plain(row.get('date_precision') or '未核实')}",
+             f"- Journal：{_plain(props['journal'])}",
              f"- DOI：{_plain(doi)}", f"- 原文链接：{_plain(row.get('url') or row.get('landing_url') or ('https://doi.org/'+doi if doi else ''))}",
              "", "## 摘要", "", _plain(row.get("abstract")) or "未提供摘要。",
-             "", "## 为什么推荐", "", _plain(row.get("why_recommended")) or "待核对推荐理由。",
-             "", "## 研究问题", "", _plain(row.get("research_question")) or "待核对。",
-             "", "## 方法学", "", _plain(row.get("methodology") or row.get("transfer_type")) or "待核对。",
-             "", "## 相关性证据", "", _plain(evidence) or "待核对。",
-             "", "## 初次调研种子" if seed else "## Attention 判定", "",
-             ("用于建立初始科研阅读基础；人工评价另行记录。" if seed else
-              _plain(row.get("attention_reason")) or
-              ("LOW：达到相关性门槛，但证据或评分尚不足以提高提醒等级；可在下方反馈。" if attention == "LOW"
-               else f"{attention}：按当前 Topic 的 Attention 规则判定；可在下方反馈。")),
-             "", "## 全文状态", "", _plain(row.get("fulltext_status")) or "未核验全文。",
-             "", END, "", _human_section(previous)]
-    return header + "\n".join(lines).rstrip() + "\n"
+             *_why_push(row, attention), "", END]
+    return header + "\n".join(lines) + _generated_tail(previous)
 
 
 def _atomic(path: Path, content: str) -> None:

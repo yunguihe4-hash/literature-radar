@@ -1,6 +1,6 @@
 # Literature Radar Bridge
 
-This is the first-party Obsidian desktop plugin (version 0.2.3; Obsidian
+This is the first-party Obsidian desktop plugin (version 0.2.4; Obsidian
 1.13.1 or newer). From the source checkout, install it into a Vault that
 already contains a `.obsidian` directory:
 
@@ -29,3 +29,6 @@ the Vault in Obsidian. The optional `LITERATURE_RADAR_CONFIG_ROOT` environment
 variable provides an initial value. No machine path is bundled into the plugin.
 The plugin renders its own four feedback buttons; Meta Bind and other
 third-party Obsidian plugins are not required.
+On Literature Radar cards, the Bridge shows the six reading Properties by
+default. Use the **Toggle full card Properties** command to inspect every
+internal YAML field. Other notes and the global Obsidian setting are unaffected.

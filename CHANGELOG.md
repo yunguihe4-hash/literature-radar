@@ -1,5 +1,12 @@
 # Release notes
 
+## v0.3.2 — Obsidian card reading layout
+
+- Show the verified journal name and a single evidence based “为什么推给我” section in new cards. Keep publication date precision and full text verification state in the pipeline while removing them from the reading body.
+- Carry Research Intelligence question, phase and method evidence through Weekly and Bootstrap card delivery without changing ranking or selection.
+- Show six core Properties on Literature Radar cards through Bridge 0.2.4. A Bridge command reveals all internal YAML fields; other notes retain their Obsidian display settings.
+- Add an offline, dry run first migration for managed historical cards. It backs up changed Vault and archive cards, preserves feedback and everything outside the generated block, and is idempotent.
+
 ## v0.3.1 — CI compatibility hotfix
 
 Fix Python 3.11 parsing of alert notifications and isolate the Obsidian

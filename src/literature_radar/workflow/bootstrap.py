@@ -149,7 +149,9 @@ def _report_rows(config_dir: Path, database: Path, window: tuple[str, str],
                      "date_precision": "day" if len(when) >= 10 else "month" if len(when) >= 7 else "year",
                      "document_type": paper.document_type,
                      "indexed_date": paper.indexed_date, "updated_date": paper.updated_date,
-                     "journal": paper.journal, "doi": paper.doi or paper.identifiers.get("doi"),
+                     "journal": paper.journal or ("bioRxiv" if any(
+                         item.provider_id == "biorxiv" for item in paper.source_records) else None),
+                     "doi": paper.doi or paper.identifiers.get("doi"),
                      "url": paper.landing_url,
                      "relevance": relevance,
                      "priority": "BOOTSTRAP_SEED",
@@ -160,6 +162,16 @@ def _report_rows(config_dir: Path, database: Path, window: tuple[str, str],
                      "transfer_explanation": transfer,
                      "research_question": reason["questions"][0] if reason["questions"] else
                                           reason["topic_corroboration"]["question_id"] if reason.get("topic_corroboration") else None,
+                     "research_question_label": next((item["label"] for item in bundle["profile"]["questions"]
+                         if item["id"] == (reason["questions"][0] if reason["questions"] else
+                             reason["topic_corroboration"]["question_id"] if reason.get("topic_corroboration") else None)), None),
+                     "research_phase": "重点问题：" + "、".join(item["label"] for item in bundle["profile"]["questions"]
+                         if item["id"] in bundle["phase"]["priority_question_ids"]),
+                     "method_evidence": next((item["excerpt"] for item in reason["evidence"]
+                         if item.get("field") == "abstract" and item.get("phrase") in
+                         {alias for method in bundle["profile"]["methods"] for alias in method.get("aliases", [])}), None),
+                     "research_alignment": transfer.get("transfer_rationale") if transfer and transfer.get("evidence_excerpt") else
+                         reason.get("topic_corroboration", {}).get("rationale") if reason.get("topic_corroboration") else None,
                      "evidence": evidence,
                      "why_recommended": why,
                      "borrowing_value": transfer["transfer_rationale"] if transfer else None,

@@ -786,7 +786,7 @@ def _deliver_cards_locked(cards: list[Path], *, section: str, config: Path | Non
             key = meta.get("paper_key", "")
             metadata = (metadata_by_key or {}).get(key)
             level = meta.get("current_attention", "")
-            if (meta.get("type") != "literature-review-card" or meta.get("topic") != topic
+            if (meta.get("type") != "literature-review-card" or meta.get("topic") not in {topic, meta.get("topic_display_name")}
                     or not _safe_topic(topic) or not key.startswith(topic + "|")):
                 raise ObsidianError("Invalid Topic or card identity")
             allowed = {"BOOTSTRAP_SEED", "HIGH", "MEDIUM", "LOW"} if section == "Bootstrap" else {"HIGH", "MEDIUM", "LOW"}
@@ -981,7 +981,7 @@ def migrate_staged(source_dirs: list[Path], *, config: Path | None = None,
             raise ObsidianError(f"Topic {topic} has {len(cards)} cards; expected {expected_per_topic}")
         for card in cards:
             meta = frontmatter(card.read_text(encoding="utf-8"))
-            if meta.get("topic_id") != topic or meta.get("topic") != topic or "## 我的评价" not in card.read_text(encoding="utf-8"):
+            if meta.get("topic_id") != topic or meta.get("topic") not in {topic, meta.get("topic_display_name")} or "## 我的评价" not in card.read_text(encoding="utf-8"):
                 raise ObsidianError("Migration card Topic or feedback region is invalid")
             key = meta.get("paper_key")
             if not key or key in keys:
